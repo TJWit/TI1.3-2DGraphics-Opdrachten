@@ -9,9 +9,10 @@ import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 public class Spiral extends Application {
+    private Canvas canvas;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Canvas canvas = new Canvas(1920, 1080);
+        this.canvas = new Canvas(1920, 1080);
         draw(new FXGraphics2D(canvas.getGraphicsContext2D()));
         primaryStage.setScene(new Scene(new Group(canvas)));
         primaryStage.setTitle("Spiral");
@@ -20,6 +21,22 @@ public class Spiral extends Application {
     
     
     public void draw(FXGraphics2D graphics) {
+        graphics.translate(this.canvas.getWidth()/2, this.canvas.getHeight()/2);
+
+        double prevX = 0;
+        double prevY = 0;
+        double n = 5;
+
+        graphics.draw(new Line2D.Double(-500, 0, 500, 0));
+        graphics.draw(new Line2D.Double(0, -500, 0, 500));
+
+        for (double i = 0; i < 100; i+=0.01) {
+            double x = n * i * Math.cos(i);
+            double y = n * i * Math.sin(i);
+            graphics.draw(new Line2D.Double(prevX, prevY, x, y));
+            prevX = x;
+            prevY = y;
+        }
     }
     
     
