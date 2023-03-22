@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-public class Spirograph extends Application {
+public class Spirograph extends Application  {
     private TextField v1;
     private TextField v2;
     private TextField v3;
@@ -19,7 +19,7 @@ public class Spirograph extends Application {
     private Canvas canvas;
     
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception  {
         this.canvas = new Canvas(1920, 1080);
         FXGraphics2D graphics = new FXGraphics2D(canvas.getGraphicsContext2D());
         graphics.translate(this.canvas.getWidth()/2, this.canvas.getHeight()/2);
