@@ -16,8 +16,7 @@ public class Mirror extends Application {
     ResizableCanvas canvas;
 
     @Override
-    public void start(Stage primaryStage) throws Exception
-    {
+    public void start(Stage primaryStage) throws Exception {
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         mainPane.setCenter(canvas);
@@ -28,11 +27,35 @@ public class Mirror extends Application {
     }
 
 
-    public void draw(FXGraphics2D graphics)
-    {
+    public void draw(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.white);
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+        graphics.translate(canvas.getWidth()/2,canvas.getHeight()/2);
+
+        graphics.drawLine(-500,0,500,0);
+        graphics.drawLine(0,-500,0,500);
+
+        graphics.drawLine(-300,750,300,-750);
+
+        Area block = new Area(new Rectangle2D.Double(-50,-200,100,100));
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(Math.atan((double)10/25));
+        tx.translate(-50,0);
+
+        Area mirrored = new Area(block);
+        AffineTransform tx2 = new AffineTransform();
+        tx2.rotate(Math.PI/2);
+        tx2.rotate(Math.atan((double)10/25));
+        tx2.translate(-150,100);
+        mirrored.transform(tx2);
+
+        block.transform(tx);
+        graphics.draw(block);
+        graphics.draw(mirrored);
+
+
+
     }
 
 
