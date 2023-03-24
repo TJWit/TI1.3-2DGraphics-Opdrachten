@@ -47,10 +47,10 @@ public class AngryBirds extends Application {
 
         // Add debug button
         javafx.scene.control.CheckBox showDebug = new CheckBox("Show debug");
-        showDebug.setOnAction(e -> {
-            debugSelected = showDebug.isSelected();
-        });
-        mainPane.setTop(showDebug);
+//        showDebug.setOnAction(e -> {
+//            debugSelected = showDebug.isSelected();
+//        });
+//        mainPane.setTop(showDebug);
 
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         mainPane.setCenter(canvas);
@@ -84,23 +84,46 @@ public class AngryBirds extends Application {
         world.setGravity(new Vector2(0, -9.8));
 
         Body bird = new Body();
-        BodyFixture fixture = new BodyFixture(Geometry.createCircle(0.3));
+        BodyFixture fixture = new BodyFixture(Geometry.createCircle(0.25));
         fixture.setRestitution(.25);
         bird.addFixture(fixture);
-        bird.getTransform().setTranslation(new Vector2(0,10));
+        bird.getTransform().setTranslation(new Vector2(-5,-3.5));
         bird.setMass(MassType.NORMAL);
         world.addBody(bird);
 
-        Body plank = new Body();
-        BodyFixture fixtureplank = new BodyFixture(Geometry.createRectangle(5,1));
-        fixture.setRestitution(.25);
-        plank.addFixture(fixtureplank);
-        plank.getTransform().setTranslation(new Vector2(0,10));
-        plank.setMass(MassType.NORMAL);
-        world.addBody(plank);
+        Body box = new Body();
+        BodyFixture fixtureBox = new BodyFixture(Geometry.createRectangle(0.45,0.45));
+        fixtureBox.setRestitution(.25);
+        box.addFixture(fixtureBox);
+        box.getTransform().setTranslation(new Vector2(4,-2.5));
+        box.setMass(MassType.NORMAL);
+        world.addBody(box);
 
-        gameObjects.add(new GameObject("/images/bird.jpg", bird, new Vector2(0,0), 0.15));
-        gameObjects.add(new GameObject("/images/plank.png", plank, new Vector2(0,0), 0.15));
+        Body box2 = new Body();
+        box2.addFixture(fixtureBox);
+        box2.getTransform().setTranslation(new Vector2(4,-3));
+        box2.setMass(MassType.NORMAL);
+        world.addBody(box2);
+
+        Body box3 = new Body();
+        box3.addFixture(fixtureBox);
+        box3.getTransform().setTranslation(new Vector2(4,-3.5));
+        box3.setMass(MassType.NORMAL);
+        world.addBody(box3);
+
+        Body ground = new Body();
+        BodyFixture fixtureGround = new BodyFixture(Geometry.createRectangle(20,1));
+        fixtureGround.setRestitution(.25);
+        ground.addFixture(fixtureGround);
+        ground.getTransform().setTranslation(new Vector2(0,-5.20));
+        ground.setMass(MassType.INFINITE);
+
+        world.addBody(ground);
+
+        gameObjects.add(new GameObject("/images/bird.png", bird, new Vector2(0,0), 0.15));
+        gameObjects.add(new GameObject("/images/box.png", box, new Vector2(0,0), 0.15));
+        gameObjects.add(new GameObject("/images/box.png", box2, new Vector2(0,0), 0.15));
+        gameObjects.add(new GameObject("/images/box.png", box3, new Vector2(0,0), 0.15));
     }
 
     public void draw(FXGraphics2D graphics) {

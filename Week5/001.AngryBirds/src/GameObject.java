@@ -28,7 +28,7 @@ public class GameObject {
         this.scale = scale;
         try {
             image = ImageIO.read(getClass().getResource(imageFile));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -49,13 +49,4 @@ public class GameObject {
 
     }
 
-    public void addFixture(Circle circle) {
-    }
-
-    public Transform getTransform() {
-        return new Transform();
-    }
-
-    public void setMass(MassType normal) {
-    }
 }
