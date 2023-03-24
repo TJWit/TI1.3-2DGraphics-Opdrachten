@@ -1,6 +1,8 @@
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.nio.BufferOverflowException;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -9,10 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
+import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
+
+import javax.imageio.ImageIO;
 
 public class AngryBirds extends Application {
 
@@ -23,10 +31,19 @@ public class AngryBirds extends Application {
     private boolean debugSelected = false;
     private ArrayList<GameObject> gameObjects = new ArrayList<>();
 
+    private BufferedImage background;
+//    private GameObject bird;
+
     @Override
     public void start(Stage stage) throws Exception {
 
         BorderPane mainPane = new BorderPane();
+
+        try {
+            this.background = ImageIO.read(getClass().getResource("/images/background.jpg"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Add debug button
         javafx.scene.control.CheckBox showDebug = new CheckBox("Show debug");
@@ -65,12 +82,35 @@ public class AngryBirds extends Application {
     public void init() {
         world = new World();
         world.setGravity(new Vector2(0, -9.8));
+
+        Body bird = new Body();
+        BodyFixture fixture = new BodyFixture(Geometry.createCircle(0.3));
+        fixture.setRestitution(.25);
+        bird.addFixture(fixture);
+        bird.getTransform().setTranslation(new Vector2(0,10));
+        bird.setMass(MassType.NORMAL);
+        world.addBody(bird);
+
+        Body plank = new Body();
+        BodyFixture fixtureplank = new BodyFixture(Geometry.createRectangle(5,1));
+        fixture.setRestitution(.25);
+        plank.addFixture(fixtureplank);
+        plank.getTransform().setTranslation(new Vector2(0,10));
+        plank.setMass(MassType.NORMAL);
+        world.addBody(plank);
+
+        gameObjects.add(new GameObject("/images/bird.jpg", bird, new Vector2(0,0), 0.15));
+        gameObjects.add(new GameObject("/images/plank.png", plank, new Vector2(0,0), 0.15));
     }
 
     public void draw(FXGraphics2D graphics) {
         graphics.setTransform(new AffineTransform());
         graphics.setBackground(Color.white);
         graphics.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+
+        AffineTransform backTX = graphics.getTransform();
+        backTX.scale(0.25, 0.25);
+        graphics.drawImage(this.background, backTX, null);
 
         AffineTransform originalTransform = graphics.getTransform();
 

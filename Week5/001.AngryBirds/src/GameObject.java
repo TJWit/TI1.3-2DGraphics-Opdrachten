@@ -1,5 +1,9 @@
 
 import org.dyn4j.dynamics.Body;
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.geometry.Circle;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Transform;
 import org.dyn4j.geometry.Vector2;
 import org.jfree.fx.FXGraphics2D;
 
@@ -43,5 +47,15 @@ public class GameObject {
         tx.translate(-image.getWidth() / 2, -image.getHeight() / 2);
         g2d.drawImage(image, tx, null);
 
+    }
+
+    public void addFixture(Circle circle) {
+    }
+
+    public Transform getTransform() {
+        return new Transform();
+    }
+
+    public void setMass(MassType normal) {
     }
 }
