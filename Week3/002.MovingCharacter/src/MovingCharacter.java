@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javafx.scene.input.MouseEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,7 +20,7 @@ import javax.imageio.ImageIO;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
-public class MovingCharacter extends Application implements MouseListener {
+public class MovingCharacter extends Application {
     private ResizableCanvas canvas;
 
     private Character character;
@@ -32,7 +30,7 @@ public class MovingCharacter extends Application implements MouseListener {
 
         BorderPane mainPane = new BorderPane();
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
-        canvas.addMouseListener(this);
+        canvas.setOnMousePressed(e -> mousePressed(e));
 
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
@@ -80,29 +78,13 @@ public class MovingCharacter extends Application implements MouseListener {
         launch(MovingCharacter.class);
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        character.setState(1);
-        System.out.println("test");
-    }
+    private void mousePressed(MouseEvent e) {
 
-    @Override
-    public void mousePressed(MouseEvent e) {
+        if (this.character.getState() == 0) {
+            this.character.setState(1);
+            System.out.println("test");
+        }
 
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }

@@ -4,12 +4,14 @@ import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeoutException;
 
 public class Character {
     private BufferedImage[] sprites;
 
     private Point2D position;
     private Point2D speed;
+    private Point2D oldSpeed;
 
     private int counter;
     private int sprite;
@@ -41,10 +43,15 @@ public class Character {
             case 0:
                 this.state = 0;
                 this.sprite = 32;
+                this.speed = this.oldSpeed;
+
                 break;
             case 1:
                 this.state = 1;
                 this.sprite = 28;
+                this.oldSpeed = this.speed;
+                this.speed = new Point2D.Double(0,0);
+
                 break;
             default:
                 System.out.println("wrong state");
@@ -64,8 +71,25 @@ public class Character {
                     this.sprite = 32;
                 }
             }
+        } else if (this.state == 1) {
+            if (this.counter % 20 == 0) {
+                this.sprite++;
+                if (this.sprite == 29) {
+                    this.sprite = 42;
+                }
+                if (this.sprite == 65) {
+                    try {
+                        Thread.sleep(500);
+                        setState(0);
+                    } catch (InterruptedException e) {
+                        setState(0);
+                    }
+                }
+                if (this.sprite == 48) {
+                    this.sprite = 64;
+                }
+            }
         }
-
 
     }
 
@@ -77,6 +101,9 @@ public class Character {
 
     }
 
+    public int getState() {
+        return state;
+    }
 }
 
 
