@@ -8,6 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +16,9 @@ import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import org.jfree.fx.ResizableCanvas;
 
-public class VerletEngine extends Application {
+import javafx.scene.input.KeyEvent;
+
+public class VerletEngine extends Application{
 
     private ResizableCanvas canvas;
     private ArrayList<Particle> particles = new ArrayList<>();
@@ -28,6 +31,9 @@ public class VerletEngine extends Application {
         canvas = new ResizableCanvas(g -> draw(g), mainPane);
         mainPane.setCenter(canvas);
         FXGraphics2D g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
+
+        canvas.setOnKeyPressed(e -> handleKeyPressed(e));
+
         new AnimationTimer() {
             long last = -1;
 
@@ -47,11 +53,19 @@ public class VerletEngine extends Application {
         canvas.setOnMousePressed(e -> mousePressed(e));
         canvas.setOnMouseReleased(e -> mouseReleased(e));
         canvas.setOnMouseDragged(e -> mouseDragged(e));
+        canvas.setOnMouseDragged(e -> mouseDragged(e));
 
         stage.setScene(new Scene(mainPane));
         stage.setTitle("Verlet Engine");
         stage.show();
         draw(g2d);
+    }
+
+    private void handleKeyPressed(KeyEvent e) {
+        // Handle key pressed events
+        if (e.getCode() == KeyCode.UP) {
+            System.out.println("test");
+        }
     }
 
     public void init() {
@@ -112,6 +126,10 @@ public class VerletEngine extends Application {
 
             constraints.add(new DistanceConstraint(newParticle, sorted.get(2)));
         } else if (e.getButton() == MouseButton.MIDDLE) {
+
+//            if (keyPressed() == "a") {
+//                System.out.println("true");
+//            }
             // Reset
             particles.clear();
             constraints.clear();
